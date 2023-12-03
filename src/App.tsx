@@ -1,23 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import { keyboardNotes } from "./utils/keyboardNotes";
+import useMIDI from "./hooks/useMIDI";
+
+interface CustomMIDIMessageEvent {
+  data: Uint8Array;
+}
 
 function App() {
+  const [midiMessages, setMidiMessages] = useState<string[]>([]);
+
+  const handleMIDIMessage = (midiMessage: WebMidi.MIDIMessageEvent) => {
+    // Convert Uint8Array to string
+    const dataString = Array.from(midiMessage.data).join(', ');
+  
+    setMidiMessages(prevMessages => [...prevMessages, dataString]);
+  };
+  
+  useMIDI(handleMIDIMessage);
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Web MIDI App</h1>
+        <div>
+          {midiMessages.map((message, index) => (
+            <p key={index}>{message}</p>
+          ))}
+        </div>
       </header>
     </div>
   );
