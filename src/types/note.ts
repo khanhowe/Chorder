@@ -1,15 +1,15 @@
 export enum NoteName {
     C = 'C', 
-    CSharpDFlat = 'C#/Db',
+    CSharpDFlat = 'C#',
     D = 'D', 
-    DSharpEFlat = 'D#/Eb',
+    DSharpEFlat = 'D#',
     E = 'E',
     F = 'F', 
-    FSharpGFlat = 'F#/Gb',
+    FSharpGFlat = 'F#',
     G = 'G',
-    GSharpAflat = 'G#/Ab', 
+    GSharpAflat = 'G#', 
     A = 'A', 
-    ASharpBFlat = 'A#/Bb', 
+    ASharpBFlat = 'A#', 
     B = 'B',
 }
 
@@ -21,7 +21,8 @@ export enum MessageType {
 }
 
 export interface NoteMessage {
-    name: NoteWithOctave;
+    // name: NoteWithOctave;
+    midiNote: number;
     type: MessageType;
     velocity: number;
 };
