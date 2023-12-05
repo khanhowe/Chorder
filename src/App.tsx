@@ -1,7 +1,7 @@
 import { useCallback, useReducer, useRef } from "react";
 import "./App.css";
 import useMIDI from "./hooks/useMIDI";
-import { MessageType } from "./types/note";
+import { MessageType, NoteMessage } from "./types/note";
 import NoteAnalysis from "./analysis/chord";
 import { midiReducer } from "./midi/midiReducer";
 import { ActionTypes } from "./types/ActionTypes.type";
@@ -12,23 +12,49 @@ function App() {
     chordNotes: [],
   });
 
-  // useRef to maintain the debounce timer across renders
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-  const debounceDelay = 100;
+  const debounceDelay = 0;
 
   const processMIDIMessage = useCallback(
     (midiMessage: WebMidi.MIDIMessageEvent) => {
       const [messageType, midiNumber, velocity] = Array.from(midiMessage.data);
+      
+      const newNote: NoteMessage = {
+        midiNote: midiNumber,
+        type: messageType,
+        velocity,
+      };
 
-      if (messageType === MessageType.PressOn) {
+      const isNoteInChordNotes = (noteToCheck: NoteMessage): boolean => {
+        return midiState.chordNotes.some(
+          (note: NoteMessage) => note.midiNote === noteToCheck.midiNote
+        );
+      };
+
+      const addNoteToChord = () => {
         dispatch({
           type: ActionTypes.ADD_NOTE,
-          payload: { midiNote: midiNumber, velocity },
+          payload: newNote,
         });
       }
-      // Add other conditions as needed
+      
+      const removeNoteFromChord = () => {
+        dispatch({
+          type: ActionTypes.REMOVE_NOTE,
+          payload: newNote,
+        });
+      }
+
+      if (newNote.type === MessageType.PressOn) {
+        const noteAlreadyIncluded = isNoteInChordNotes(newNote);
+        if (noteAlreadyIncluded) {
+          removeNoteFromChord();
+        } else {
+          addNoteToChord();
+        }
+      }
     },
-    [dispatch]
+    [dispatch, midiState]
   );
 
   const handleMIDIMessage = useCallback(
@@ -43,9 +69,10 @@ function App() {
     },
     [processMIDIMessage]
   );
-  const clearChordNotes = (): void => {
+
+  const clearChordNotes = useCallback(() => {
     dispatch({ type: ActionTypes.CLEAR_NOTES });
-  };
+  }, [dispatch]);
 
   useMIDI(handleMIDIMessage);
   const noteAnalysis = new NoteAnalysis();
@@ -54,7 +81,8 @@ function App() {
       <header className="App-header">
         <h1>Web MIDI App</h1>
         <div>
-          <p>{JSON.stringify(midiState)}</p>
+          <p>{JSON.stringify(midiState.chordNotes)}</p>
+          <p>{noteAnalysis.identifyChord(midiState.chordNotes)}</p>
           <button onClick={clearChordNotes}>Clear</button>
         </div>
       </header>
