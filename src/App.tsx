@@ -5,6 +5,11 @@ import { MessageType, NoteMessage } from "./types/note";
 import NoteAnalysis from "./analysis/chord";
 import { midiReducer } from "./midi/midiReducer";
 import { ActionTypes } from "./types/ActionTypes.type";
+import { AuthProvider } from "./AuthContext";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoginForm from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import SignupForm from "./pages/Signup";
 
 function App() {
   const [midiState, dispatch] = useReducer(midiReducer, {
@@ -77,16 +82,31 @@ function App() {
   useMIDI(handleMIDIMessage);
   const noteAnalysis = new NoteAnalysis();
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Web MIDI App</h1>
-        <div>
-          <p>{JSON.stringify(midiState.chordNotes)}</p>
-          <p>{noteAnalysis.identifyChord(midiState.chordNotes)}</p>
-          <button onClick={clearChordNotes}>Clear</button>
-        </div>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path='/login' element={<LoginForm/>}/>
+          <Route path='/signup' element={<SignupForm/>}/>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <div className="App">
+                  <header className="App-header">
+                    <h1>Web MIDI App</h1>
+                    <div>
+                      <p>{JSON.stringify(midiState.chordNotes)}</p>
+                      <p>{noteAnalysis.identifyChord(midiState.chordNotes)}</p>
+                      <button onClick={clearChordNotes}>Clear</button>
+                    </div>
+                  </header>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
