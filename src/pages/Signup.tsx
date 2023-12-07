@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../auth/AuthContext";
 
 const SignupForm: React.FC = () => {
   const [username, setUsername] = useState("");
