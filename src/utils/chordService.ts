@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { APIRoutes } from './apiRoutes';
-import { useAuth } from '../auth/AuthContext';
 
 export interface CreateChordDto {
     name: string;

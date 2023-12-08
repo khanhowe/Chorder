@@ -35,9 +35,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = async (creds: AuthCredentials) => {
         try {
-            const response = await axios.post(APIRoutes.LOG_IN, creds);
-            console.log(`Response: ${JSON.stringify(response.data)}`);
-            const { accessToken: token } = response.data;
+            const { data: { accessToken: token }} = await axios.post(APIRoutes.LOG_IN, creds);
+            
             localStorage.setItem('authToken', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             setUser({ username: creds.username, token });
