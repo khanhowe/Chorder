@@ -83,11 +83,10 @@ const Home: React.FC = () => {
                     <div className='piano'>
                         <ChorderPiano />
                     </div>
-                    {/* <p>{JSON.stringify(notesArray)}</p> */}
                     <Notes/>
+                    <p>{noteAnalysis.identifyChord(chordNotes)}</p>
                     <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p>
                     <p>{JSON.stringify(progressionAnalysis.identifyProgression(root, progressionChords))}</p>
-                    <p>{noteAnalysis.identifyChord(chordNotes)}</p>
                     <button onClick={clearChordNotes}>Clear</button>
                     <button onClick={handleSaveChord}>Save Chord</button>
                     <button onClick={addChordToProgression}>Add Chord To Progression</button>

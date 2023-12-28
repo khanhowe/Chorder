@@ -10,6 +10,7 @@ interface NoteChipProps {
 const NoteChip: React.FC<NoteChipProps> = ({ note }) => {
     const { removeNote } = useNotes();
     return <Chip
+        variant='outlined'
         label={allNotes[note.midiNote]}
         onClick={() => removeNote(note)}
     />
@@ -17,7 +18,6 @@ const NoteChip: React.FC<NoteChipProps> = ({ note }) => {
 
 const Notes: React.FC = () => {
     const { chordNotes } = useNotes();
-    console.log(chordNotes);
     return (
         <div>
             {chordNotes.map((note, index) => {
