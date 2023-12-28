@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SideBar } from '../components/SideBar/SideBar';
 import RootSelect from '../components/RootSelect/RootSelect';
 import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
+import Notes from '../components/Notes';
 
 const Home: React.FC = () => {
     const { addNote, removeNote, clearNotes, isNoteInChord, chordNotes } = useNotes();
@@ -82,9 +83,10 @@ const Home: React.FC = () => {
                     <div className='piano'>
                         <ChorderPiano />
                     </div>
+                    {/* <p>{JSON.stringify(notesArray)}</p> */}
+                    <Notes/>
                     <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p>
                     <p>{JSON.stringify(progressionAnalysis.identifyProgression(root, progressionChords))}</p>
-                    <p>{JSON.stringify(notesArray)}</p>
                     <p>{noteAnalysis.identifyChord(chordNotes)}</p>
                     <button onClick={clearChordNotes}>Clear</button>
                     <button onClick={handleSaveChord}>Save Chord</button>
