@@ -1,10 +1,11 @@
-import { Chip, Menu, MenuItem } from '@mui/material';
+import { Chip, Menu, MenuItem, Typography } from '@mui/material';
 import { useNotes } from '../utils/ChordContext';
 import { useChords } from '../utils/ProgressionContext';
 import { Chord } from '../types/Chord';
 import NoteAnalysis from '../analysis/NoteAnalysis';
 import { MouseEvent, useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
 interface ChordChipProps {
     chord: Chord;
 }
@@ -70,13 +71,18 @@ const ChordChip: React.FC<ChordChipProps> = ({ chord }) => {
 };
 
 const Chords: React.FC = () => {
-    const { progressionChords } = useChords();
+    const { progressionChords, root } = useChords();
+    const progressionAnalysis = new ProgressionAnalysis();
+    const romanNumeralFormat = progressionAnalysis.identifyProgression(root, progressionChords);
     return (
         <div>
             <CurrentChord />
-            <div>
+            <div style={{ display: 'flex'}}>
                 {progressionChords.map((chord, index) => (
-                    <ChordChip chord={chord} key={index} />
+                    <div key={index}>
+                        <Typography>{chord.name}</Typography>
+                        <Typography>{romanNumeralFormat[index]}</Typography>
+                    </div>
                 ))}
             </div>
         </div>

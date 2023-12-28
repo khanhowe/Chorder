@@ -8,8 +8,6 @@ import ChorderPiano from '../components/ChorderPiano';
 import { ChordService, CreateChordDto } from '../utils/chordService';
 import { useNotes } from '../utils/ChordContext';
 import { useChords } from '../utils/ProgressionContext';
-import { Chord } from '../types/Chord';
-import { v4 as uuidv4 } from 'uuid';
 import { SideBar } from '../components/SideBar/SideBar';
 import RootSelect from '../components/RootSelect/RootSelect';
 import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
@@ -18,9 +16,7 @@ import Chords from '../components/Chords';
 
 const Home: React.FC = () => {
     const { addNote, removeNote, clearNotes, isNoteInChord, chordNotes } = useNotes();
-    const { addChord, removeChord, clearChords, root, progressionChords } = useChords();
     const chordService = new ChordService();
-    const progressionAnalysis = new ProgressionAnalysis();
 
     const processMIDIMessage = useCallback(
         (midiMessage: WebMidi.MIDIMessageEvent) => {
@@ -60,20 +56,10 @@ const Home: React.FC = () => {
         return chordService.saveChord(payload);
     };
 
-    const addChordToProgression = useCallback(() => {
-        addChord({
-            id: uuidv4(),
-            name: noteAnalysis.identifyChord(chordNotes) || '',
-            description: '',
-            notes: chordNotes
-        })
-    }, [addChord, chordNotes])
+
 
     useMIDI(processMIDIMessage);
     const noteAnalysis = new NoteAnalysis();
-    const notesArray: string[] = chordNotes.map(
-        (noteMessage: NoteMessage) => allNotes[noteMessage.midiNote],
-    );
     return (
         <div className="App">
             <NavBar />
@@ -86,12 +72,8 @@ const Home: React.FC = () => {
                     </div>
                     <Notes/>
                     <Chords/>
-                    {/* <p>{noteAnalysis.identifyChord(chordNotes)}</p>
-                    <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p> */}
-                    <p>{JSON.stringify(progressionAnalysis.identifyProgression(root, progressionChords))}</p>
                     <button onClick={clearChordNotes}>Clear</button>
                     <button onClick={handleSaveChord}>Save Chord</button>
-                    <button onClick={addChordToProgression}>Add Chord To Progression</button>
                 </div>
             </div>
         </div>
