@@ -1,5 +1,5 @@
 import { mockNote } from "../mocks/note.mock";
-import NoteAnalysis from '../../src/analysis/chord';
+import NoteAnalysis from '../../src/analysis/NoteAnalysis';
 import { MidiNotes } from '../../src/midi/midi-notes.enum';
 
 

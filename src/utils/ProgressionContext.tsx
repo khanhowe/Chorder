@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { NoteMessage } from '../types/note';
+import { NoteMessage, NoteName } from '../types/note';
 import { Chord } from '../types/Chord';
+import { Progression } from 'tonal';
 
 interface ProgressionContextType {
     progressionChords: Chord[];
+    root: NoteName;
+    setRoot: (noteName: NoteName) => void;
     addChord: (chord: Chord) => void;
     removeChord: (id: string) => void;
     clearChords: () => void;
@@ -19,6 +22,7 @@ interface ChordProviderProps {
 
 export const ProgressionProvider: React.FC<ChordProviderProps> = ({ children }) => {
     const [progressionChords, setProgressionChords] = useState<Chord[]>([]);
+    const [root, setRoot] = useState<NoteName>(NoteName.A);
 
     const addChord = (chord: Chord): void => {
         setProgressionChords(prevChords => [...prevChords, chord]);
@@ -38,7 +42,7 @@ export const ProgressionProvider: React.FC<ChordProviderProps> = ({ children }) 
 
     return (
         <ProgressionContext.Provider
-            value={{ progressionChords, addChord, removeChord, clearChords }}
+            value={{ progressionChords, root, setRoot, addChord, removeChord, clearChords }}
         >
             {children}
         </ProgressionContext.Provider>

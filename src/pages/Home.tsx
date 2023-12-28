@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import NoteAnalysis from '../analysis/chord';
+import NoteAnalysis from '../analysis/NoteAnalysis';
 import useMIDI from '../hooks/useMIDI';
 import { MessageType, NoteMessage } from '../types/note';
 import NavBar from '../components/NavBar/NavBar';
@@ -10,11 +10,16 @@ import { useNotes } from '../utils/ChordContext';
 import { useChords } from '../utils/ProgressionContext';
 import { Chord } from '../types/Chord';
 import { v4 as uuidv4 } from 'uuid';
+import { SideBar } from '../components/SideBar/SideBar';
+import RootSelect from '../components/RootSelect/RootSelect';
+import { Progression } from 'tonal';
+import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
 
 const Home: React.FC = () => {
     const { addNote, removeNote, clearNotes, isNoteInChord, chordNotes } = useNotes();
-    const { addChord, removeChord, clearChords, progressionChords } = useChords();
+    const { addChord, removeChord, clearChords, root, progressionChords } = useChords();
     const chordService = new ChordService();
+    const progressionAnalysis = new ProgressionAnalysis();
 
     const processMIDIMessage = useCallback(
         (midiMessage: WebMidi.MIDIMessageEvent) => {
@@ -71,14 +76,19 @@ const Home: React.FC = () => {
     return (
         <div className="App">
             <NavBar />
-            <div>
-                <ChorderPiano />
-                <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p>
-                <p>{JSON.stringify(notesArray)}</p>
-                <p>{noteAnalysis.identifyChord(chordNotes)}</p>
-                <button onClick={clearChordNotes}>Clear</button>
-                <button onClick={handleSaveChord}>Save Chord</button>
-                <button onClick={addChordToProgression}>Add Chord To Progression</button>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
+                <SideBar/>
+                <div>
+                    <ChorderPiano />
+                    <RootSelect/>
+                    <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p>
+                    <p>{JSON.stringify(progressionAnalysis.identifyProgression(root, progressionChords))}</p>
+                    <p>{JSON.stringify(notesArray)}</p>
+                    <p>{noteAnalysis.identifyChord(chordNotes)}</p>
+                    <button onClick={clearChordNotes}>Clear</button>
+                    <button onClick={handleSaveChord}>Save Chord</button>
+                    <button onClick={addChordToProgression}>Add Chord To Progression</button>
+                </div>
             </div>
         </div>
     );
