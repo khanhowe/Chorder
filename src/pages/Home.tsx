@@ -12,7 +12,6 @@ import { Chord } from '../types/Chord';
 import { v4 as uuidv4 } from 'uuid';
 import { SideBar } from '../components/SideBar/SideBar';
 import RootSelect from '../components/RootSelect/RootSelect';
-import { Progression } from 'tonal';
 import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
 
 const Home: React.FC = () => {
@@ -78,9 +77,11 @@ const Home: React.FC = () => {
             <NavBar />
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
                 <SideBar/>
-                <div>
-                    <ChorderPiano />
+                <div className='home'>
                     <RootSelect/>
+                    <div className='piano'>
+                        <ChorderPiano />
+                    </div>
                     <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p>
                     <p>{JSON.stringify(progressionAnalysis.identifyProgression(root, progressionChords))}</p>
                     <p>{JSON.stringify(notesArray)}</p>

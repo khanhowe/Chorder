@@ -24,6 +24,18 @@
   color: white;
 }
 
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.piano {
+  text-align: center;
+}
+
 .App-link {
   color: #61dafb;
 }
