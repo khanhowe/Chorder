@@ -14,6 +14,7 @@ import { SideBar } from '../components/SideBar/SideBar';
 import RootSelect from '../components/RootSelect/RootSelect';
 import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
 import Notes from '../components/Notes';
+import Chords from '../components/Chords';
 
 const Home: React.FC = () => {
     const { addNote, removeNote, clearNotes, isNoteInChord, chordNotes } = useNotes();
@@ -84,8 +85,9 @@ const Home: React.FC = () => {
                         <ChorderPiano />
                     </div>
                     <Notes/>
-                    <p>{noteAnalysis.identifyChord(chordNotes)}</p>
-                    <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p>
+                    <Chords/>
+                    {/* <p>{noteAnalysis.identifyChord(chordNotes)}</p>
+                    <p>{JSON.stringify(progressionChords.map((chord: Chord) => chord.name))}</p> */}
                     <p>{JSON.stringify(progressionAnalysis.identifyProgression(root, progressionChords))}</p>
                     <button onClick={clearChordNotes}>Clear</button>
                     <button onClick={handleSaveChord}>Save Chord</button>

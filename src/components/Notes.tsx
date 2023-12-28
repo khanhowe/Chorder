@@ -1,7 +1,8 @@
-import { Chip } from "@mui/material";
+import { Chip, Typography } from "@mui/material";
 import { NoteMessage } from "../types/note";
 import { allNotes } from "../utils/allNotes";
 import { useNotes } from "../utils/ChordContext";
+import { splitNoteAndOctave } from "../utils/splitNoteAndOctave";
 
 interface NoteChipProps {
     note: NoteMessage;
@@ -9,9 +10,12 @@ interface NoteChipProps {
 
 const NoteChip: React.FC<NoteChipProps> = ({ note }) => {
     const { removeNote } = useNotes();
+
+    const splitNote = splitNoteAndOctave(allNotes[note.midiNote]);
+    const chipLabel = <p>{splitNote[0]}<sub>{splitNote[1]}</sub></p>
     return <Chip
         variant='outlined'
-        label={allNotes[note.midiNote]}
+        label={chipLabel}
         onClick={() => removeNote(note)}
     />
 }
