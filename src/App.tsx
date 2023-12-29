@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginForm from './pages/Login';
 // import ProtectedRoute from "./components/ProtectedRoute";
 import SignupForm from './pages/Signup';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import { ChordProvider } from './utils/ChordContext';
 import { ProgressionProvider } from './utils/ProgressionContext';
 

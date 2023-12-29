@@ -1,0 +1,19 @@
+.notes {
+    flex: 1;
+    padding: 10px 10px;
+    height: 100px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.note-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.note {
+    &:hover {
+        cursor: pointer;
+    }
+}

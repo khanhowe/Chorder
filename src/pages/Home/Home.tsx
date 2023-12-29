@@ -1,18 +1,19 @@
 import { useCallback } from 'react';
-import NoteAnalysis from '../analysis/NoteAnalysis';
-import useMIDI from '../hooks/useMIDI';
-import { MessageType, NoteMessage } from '../types/note';
-import NavBar from '../components/NavBar/NavBar';
-import { allNotes } from '../utils/allNotes';
-import ChorderPiano from '../components/ChorderPiano';
-import { ChordService, CreateChordDto } from '../utils/chordService';
-import { useNotes } from '../utils/ChordContext';
-import { useChords } from '../utils/ProgressionContext';
-import { SideBar } from '../components/SideBar/SideBar';
-import RootSelect from '../components/RootSelect/RootSelect';
-import ProgressionAnalysis from '../analysis/ProgressionAnalysis';
-import Notes from '../components/Notes';
-import Chords from '../components/Chords';
+import NoteAnalysis from '../../analysis/NoteAnalysis';
+import useMIDI from '../../hooks/useMIDI';
+import { MessageType, NoteMessage } from '../../types/note';
+import NavBar from '../../components/NavBar/NavBar';
+import { allNotes } from '../../utils/allNotes';
+import ChorderPiano from '../../components/ChorderPiano';
+import { ChordService, CreateChordDto } from '../../utils/chordService';
+import { useNotes } from '../../utils/ChordContext';
+import { SideBar } from '../../components/SideBar/SideBar';
+import RootSelect from '../../components/RootSelect/RootSelect';
+import Notes from '../../components/Notes/Notes';
+import Chords from '../../components/Chords/Chords';
+import { Paper } from '@mui/material';
+import './Home.scss';
+import CurrentChord from '../../components/Chords/CurrentChord';
 
 const Home: React.FC = () => {
     const { addNote, removeNote, clearNotes, isNoteInChord, chordNotes } = useNotes();
@@ -66,14 +67,15 @@ const Home: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
                 <SideBar/>
                 <div className='home'>
-                    <RootSelect/>
-                    <div className='piano'>
-                        <ChorderPiano />
+                    <div className='data-display'>
+                        <Notes/>
+                        <CurrentChord/>
+                        <Chords/>
                     </div>
-                    <Notes/>
-                    <Chords/>
-                    <button onClick={clearChordNotes}>Clear</button>
-                    <button onClick={handleSaveChord}>Save Chord</button>
+                    <Paper className='piano' elevation={3}>
+                        <ChorderPiano />
+                    </Paper>
+                    <RootSelect/>
                 </div>
             </div>
         </div>
