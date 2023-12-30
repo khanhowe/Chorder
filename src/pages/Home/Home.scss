@@ -1,5 +1,14 @@
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px 20%;
+}
+
 .data-display {
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 100%;
 }

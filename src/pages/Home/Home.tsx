@@ -65,7 +65,6 @@ const Home: React.FC = () => {
         <div className="App">
             <NavBar />
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
-                <SideBar/>
                 <div className='home'>
                     <div className='data-display'>
                         <Notes/>
