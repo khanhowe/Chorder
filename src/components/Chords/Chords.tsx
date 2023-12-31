@@ -3,15 +3,7 @@ import { useChords } from '../../utils/ProgressionContext';
 import { Chord } from '../../types/Chord';
 import ProgressionAnalysis from '../../analysis/ProgressionAnalysis';
 import './Chords.scss';
-
-interface ChordChipProps {
-    chord: Chord;
-}
-
-const ChordChip: React.FC<ChordChipProps> = ({ chord }) => {
-    const { removeChord } = useChords();
-    return <Chip label={chord.name} onClick={() => removeChord(chord.id)} />;
-};
+import ChordChip from './ChordChip';
 
 const Chords: React.FC = () => {
     const { progressionChords, root } = useChords();
@@ -23,7 +15,12 @@ const Chords: React.FC = () => {
             <div className='chords'>
                 {progressionChords.map((chord, index) => (
                     <div className='chord-container' key={index}>
-                        <Typography>{chord.name}</Typography>
+                        <ChordChip
+                            chord={chord}
+                            addable={false}
+                            removeable={true}
+                            clearable={false}
+                        />
                         <Typography>{romanNumeralFormat[index]}</Typography>
                     </div>
                 ))}

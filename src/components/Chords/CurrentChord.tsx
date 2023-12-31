@@ -1,59 +1,33 @@
-import { MouseEvent, useCallback, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
 import NoteAnalysis from "../../analysis/NoteAnalysis";
 import { useChords } from "../../utils/ProgressionContext";
 import { useNotes } from "../../utils/ChordContext";
 import { Chip, Menu, MenuItem, Typography } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import ChordChip from "./ChordChip";
 
 const CurrentChord: React.FC = () => {
-    const { chordNotes, clearNotes } = useNotes();
-    const { addChord } = useChords();
+    const { chordNotes, constructedChord, setConstructedChord } = useNotes();
     const noteAnalysis = new NoteAnalysis();
-    const identifiedChord = noteAnalysis.identifyChord(chordNotes);
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event: MouseEvent<HTMLDivElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-
-    const addChordToProgression = useCallback(() => {
-        addChord({
+    useEffect(() => {
+        setConstructedChord({
             id: uuidv4(),
-            name: identifiedChord,
-            description: '',
-            notes: chordNotes
-        })
-    }, [addChord, chordNotes])
+            name: noteAnalysis.identifyChord(chordNotes),
+            notes: chordNotes,
+        });
+    }, [chordNotes, setConstructedChord]);
 
     return (
         <div className='current-chord'>
             <Typography>Current Chord</Typography>
             <div className='calculated-chord-container'>
-                <Chip
-                    label={<Typography>{identifiedChord || 'N/A'}</Typography>}
-                    variant="outlined"
-                    onClick={handleClick}
+                <ChordChip
+                    chord={constructedChord}
+                    addable={true}
+                    clearable={true}
+                    removeable={false}
                 />
-                <Menu
-                    id="new-chord-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'basic-button'
-                    }}
-                >
-                    <MenuItem onClick={addChordToProgression}>Add Chord</MenuItem>
-                    <MenuItem>Add Chord To...</MenuItem>
-                    <MenuItem onClick={() => clearNotes()}>Clear</MenuItem>
-                </Menu>
             </div>
         </div>
     );
